@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+  
+  *, *:before, *:after { 
+    box-sizing: inherit; 
+  }
+
+  div {
+    width: 100%;
+    padding: 100px;
+  }
+
+  .one {
+    background: thistle;
+  }
+
+  .two {
+    background: mistyrose;
+  }
+
+  .three {
+    background: coral;
+  }
+</style>
+
+<button>Click Me!</button>
+<script>
+  const btn = document.querySelector('button');
+  const one = document.querySelector('.one');
+  const two = document.querySelector('.two');
+  const three = document.querySelector('.three');
+
+  /*function clickOnce(el, func) {
+    el.addEventListener('click', function funClick (ev) {
+      func(ev);
+      el.removeEventListener('click', funClick);
+    });
+  }*/
+  function clickOnce(el, func) {
+    el.addEventListener('click', (ev) => {func(ev)}, { once: true, capture: false }); //false: in-out, true: out-in
+  }
+
+  clickOnce(btn, (ev) => {
+    console.log('Button Click!!');
+  });
+
+  clickOnce(three, (ev) => {
+    console.log('three!');
+  });
+
+  clickOnce(two, (ev) => {
+    console.log('two!');
+  });
+
+  clickOnce(one, (ev) => {
+    console.log('one!');
+  });
+</script>
+</body>
+</html>

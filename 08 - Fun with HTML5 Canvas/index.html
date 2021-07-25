@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+  function getColor(red, green, blue) {
+    return `#${red.toString(16).padStart(2,'0')}${green.toString(16).padStart(2,'0')}${blue.toString(16).padStart(2,'0')}`; 
+  }
+  
+  const canvas = document.getElementById("draw");
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  canvas.setAttribute("width", width);
+  canvas.setAttribute("height", height);
+  
+  const ctx = canvas.getContext("2d");
+  
+  let red = 255, green = 0, blue = 0;
+
+  ctx.lineWidth = 100; 
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = getColor(red, green, blue);
+
+  let target, isDrawing, lastPoint, down = true, recolor = false;
+
+  document.addEventListener('mousedown', (ev) => {
+    if (ev.target == canvas) {
+      isDrawing = true;
+      lastPoint = { x: ev.clientX, y: ev.clientY };  
+    }
+  });
+ 
+  document.addEventListener("mousemove", (ev) => {
+    if (ev.target == canvas) {
+      if (!isDrawing) return;
+
+      var currentPoint = { x: ev.clientX, y: ev.clientY };
+      if (ctx.lineWidth > 1 && down) {
+        ctx.lineWidth -= 1;
+      }
+      else  {
+        down = ctx.lineWidth === 100;
+        ctx.lineWidth += 1;
+      }
+
+      if (red > 0 && !recolor) {
+        red -= 5;
+        green += 5;
+        blue = 0; 
+      } else if(green > 0) {
+        green -= 5;
+        blue += 5;
+        red = 0;
+      } else if (blue > 0) {
+        recolor = true;
+        blue -= 5;
+        red += 5;
+        green = 0;
+      }
+
+      if (blue === 0) recolor = false;
+      ctx.strokeStyle = getColor(red, green, blue);
+      
+      ctx.beginPath();
+      ctx.moveTo(lastPoint.x, lastPoint.y);
+      ctx.lineTo(currentPoint.x, currentPoint.y);
+      ctx.closePath();
+      ctx.stroke();
+
+      lastPoint = currentPoint;
+    }
+  });
+
+  document.addEventListener("mouseup", (ev) => {
+    if (ev.target == canvas) {
+      isDrawing = false;
+    }
+  });
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>

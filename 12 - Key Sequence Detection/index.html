@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
+</head>
+<body>
+<script>
+  const array = [];
+  const secret = 'cobra';
+  document.addEventListener('keydown', (ev) => {
+    if (array.length === secret.length) array.shift();
+    array.push(ev.key);
+    console.log(ev.key);
+    console.log(array);
+
+    let value = array.join('');
+    if (value === secret) {
+      console.log('BINGO!') 
+      cornify_add();
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+<body>
+
+  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+    console.log('GNU/Linux Debian');
+
+    // Interpolated
+    console.log('%s is better than %s','🐧','🍎');
+
+    // Styled
+    console.log('%c Linux Kernel 5.10', 'font-size: 38px; font-style: italic; color: #FF0000')
+
+    // warning!
+    console.warn('Errors in /dev/sda');
+
+    // Error :|
+    console.error('Critial Error, Panic!');
+
+    // Info
+    console.info('Linus Torvalds likes Fedora');
+
+    // Testing
+    const el = document.querySelector('p');
+    console.assert(el.innerHTML === '', "It's not empty!");
+
+    // clearing
+    console.clear();
+
+    // Viewing DOM Elements
+    console.log(el);
+    console.dir(el);
+    console.clear();
+
+    // Grouping together
+    dogs.forEach((dog) => {
+      console.groupCollapsed(`${dog.name}`);
+      console.log(`This is ${dog.name}`);
+      console.log(`It's ${dog.age} years old`);
+      console.log(`It's ${dog.age * 7} dog years old`);
+      console.groupEnd(`${dog.name}`);
+    });
+
+    // counting
+    console.count('Linux');
+    console.count('Microsoft');
+    console.count('Windows');
+    console.count('Mac OS');
+    console.count('Apple');
+    console.count('Linux');
+    console.count('Microsoft');
+    console.count('Apple');
+    console.count('Windows');
+    console.count('Linux');
+    console.count('Apple');
+    console.count('Microsoft');
+    console.count('Windows');
+    console.count('Linux');
+    console.count('Microsoft');
+    console.count('Apple');
+    console.count('Windows');
+    console.count('Linux');
+    // timing
+    console.time('fetching book info');
+    fetch('https://openlibrary.org/books/OL8826892M.json')
+      .then((res) => res.json())
+      .then((info) => {
+        console.timeEnd('fetching book info');
+        console.log(info);
+      });
+
+    // table
+    console.table(dogs);
+  </script>
+</body>
+</html>

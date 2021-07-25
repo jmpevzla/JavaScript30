@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+  const input = document.querySelector(".search");
+  input.value = '';
+
+  const ul = document.querySelector(".suggestions");
+
+  fetch(endpoint).then(async (response) => {
+    const data = await response.json();
+    
+    input.addEventListener('input', (ev) => {
+      ul.innerHTML = '';
+      const search = ev.target.value.toLowerCase();
+      
+      const filter = data.filter((value) => {
+        const city = value.city.toLowerCase();
+        const state = value.state.toLowerCase();
+        
+        return (city.includes(search) || state.includes(search)); 
+      });
+
+      const map = filter.map((value) => {
+        let content = `${value.city}, ${value.state}`; 
+        const start = content.toLowerCase().indexOf(search);
+        const end = start + search.length;
+        const word = content.slice(start, end);
+        
+        content = [content.slice(0, start), `<span class="hl">${word}</span>`, content.slice(end)].join("");
+        return {
+          content,
+          population: Number(value.population).toLocaleString()
+        };
+      });
+
+      map.forEach((value) => {
+        const li = document.createElement("li");
+        const spanContent = document.createElement("span");
+        const spanPop = document.createElement("span");
+        spanPop.classList.add('population');
+
+        spanContent.innerHTML = value.content;
+        spanPop.textContent = value.population;
+
+        li.appendChild(spanContent);
+        li.appendChild(spanPop);
+        
+        ul.appendChild(li);
+      });
+    });
+
+  });
+</script>
+</body>
+</html>
